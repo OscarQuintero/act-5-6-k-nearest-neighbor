@@ -50,11 +50,21 @@ while len(listaIndicesAleatorios) < numeroDeInstanciasEntrenamiento:
 		listaIndicesAleatorios.append(num)
 ConjuntoEntrenamiento = ConjuntoInicial.iloc[listaIndicesAleatorios]
 
+listaIndicesPrueba = []
+for h in range(numeroDeInstancias):
+	listaIndicesPrueba.append(h)
+
+for i in listaIndicesAleatorios:
+	if i in listaIndicesPrueba:
+		listaIndicesPrueba.remove(i)
+
+ConjuntoPrueba = ConjuntoInicial.iloc[listaIndicesPrueba]
+
 print("Conjunto de Datos de Entrenamiento:")
 print(ConjuntoEntrenamiento)
 print("\n")
 print("Conjunto de Datos de Prueba:")
-# print(ConjuntoPrueba)
+print(ConjuntoPrueba)
 print("\n")
 
 
