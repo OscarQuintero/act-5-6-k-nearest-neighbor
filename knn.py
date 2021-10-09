@@ -20,21 +20,29 @@ print("Algoritmo K Nearest Neighbor")
 print("\n")
 
 print("Cargando Conjunto de Datos desde ", nombreArchivoCSV, "...")
-ConjuntoInicial = pandas.read_csv(nombreArchivoCSV)
-df = ConjuntoInicial
+try: 
+	ConjuntoInicial = pandas.read_csv(nombreArchivoCSV)
+	df = ConjuntoInicial
+except:
+	print("Archivo CSV no cargado")
+	print("Finalizando programa\n")
+	exit()
 
 print("CSV cargado")
-porcentajeEntrenamiento = int(input("Introduzca el porcentaje de instancias de entrenamiento: "))
+
 print("Conjunto de Datos: \n")
 
 print(ConjuntoInicial)
 print("\n")
 
-listaIndicesAleatorios = []
+
 numeroDeInstancias = len(ConjuntoInicial.index)
-numeroDeInstanciasEntrenamiento = math.ceil(numeroDeInstancias * porcentajeEntrenamiento/100)
+
 
 print("Se han encontrado ", numeroDeInstancias, " instancias en el Conjunto Inicial")
+print("Introduzca el porcentaje de instancias para entrenamiento (sin el signo %)")
+porcentajeEntrenamiento = int(input("Porcentaje de instancias de entrenamiento: "))
+numeroDeInstanciasEntrenamiento = math.ceil(numeroDeInstancias * porcentajeEntrenamiento/100)
 print("El porcentaje de instancias de entrenamiento es:\t", porcentajeEntrenamiento, "%")
 print("El porcentaje de instancias de prueba es:       \t", 100-porcentajeEntrenamiento, "%")
 print("En consecuencia se determina que")
@@ -42,6 +50,7 @@ print("Se usarán ", numeroDeInstanciasEntrenamiento," instancias para entrenami
 print("se usarán ", numeroDeInstancias - numeroDeInstanciasEntrenamiento," instancias para prueba.")
 print("\n")
 
+listaIndicesAleatorios = []
 k = 0
 while len(listaIndicesAleatorios) < numeroDeInstanciasEntrenamiento:
 	num = random.randint(0,numeroDeInstancias-1)
@@ -68,12 +77,14 @@ print(ConjuntoPrueba)
 print("\n")
 
 
+print("Algoritmo K Nearest Neighbor ....")
+print("Hacer función del algoritmo K-NN por tupla")
+print("Hacer predicciones para el conjunto de prueba")
+print("Mostrar predicciones y valores reales")
 
+print("Por definir mas funciones....")
 
-
-
-
-print("Algoritmo KNN ....")
+print("\n")
 print("Evaluar porcentaje de aciertos o error cuadrático medio")
 print("Evaluar capacidad predicitiva")
 print("\n")
