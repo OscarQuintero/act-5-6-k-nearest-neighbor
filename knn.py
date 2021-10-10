@@ -100,6 +100,16 @@ def insertarPrediccionParaLaInstancia(fila):
 def errorCuadrado(fila):
 	return (fila[nombrePrediccion] - fila[nombreClase])**2
 
+
+def generarTablaComparacion(TablaP, nombreClase, nombrePrediccion):
+	 return TablaP[[nombreClase, nombrePrediccion]]
+
+def errorCuadraticoMedio(TablaC, nombreClase, nombrePrediccion):
+	
+	TablaC['Error Cuadrado'] = TablaC.apply(errorCuadrado, axis=1)
+	
+	return TablaC['Error Cuadrado'].mean()
+
 #----------------BEGIN-------------------------------------------------
 print("--------------------------------------------------------")
 print("Actividad 5.6 - Implementación ")
@@ -208,9 +218,18 @@ print("Evaluar porcentaje de aciertos o error cuadrático medio")
 print("Evaluar capacidad predicitiva")
 print("\n")
 
-TablaComparacion = TablaDePredicciones[[nombreClase, nombrePrediccion]]
-TablaComparacion['Error Cuadrado'] = TablaComparacion.apply(errorCuadrado, axis=1)
+
+TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
+MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
+
+print("La clase del conjunto de datos es numérica")
 print(TablaComparacion)
+print("\n")
+print("El Error Cadrático Medio (MSE) es: ", MSE)
+
+print("\n")
+print("\n")
+
 
 
 
