@@ -84,8 +84,20 @@ numeroDeInstancias = len(ConjuntoInicial.index)
 
 print("Se han encontrado ", numeroDeInstancias, " instancias en el Conjunto Inicial")
 print("Introduzca el porcentaje de instancias para entrenamiento (sin el signo %)")
-porcentajeEntrenamiento = int(input("Porcentaje de instancias de entrenamiento: "))
-numeroDeInstanciasEntrenamiento = math.ceil(numeroDeInstancias * porcentajeEntrenamiento/100)
+try:
+	porcentajeEntrenamiento = int(input("Porcentaje de instancias de entrenamiento: "))
+	numeroDeInstanciasEntrenamiento = math.ceil(numeroDeInstancias * porcentajeEntrenamiento/100)
+except ValueError:
+	print("Valor no valido")
+	print("Usar 70% como valor por defecto?")
+	res = input("S/N: ")
+	if res != 'S':
+		print("Finalizando el programa.... :(")
+		exit()
+	else:
+		porcentajeEntrenamiento = 70
+		numeroDeInstanciasEntrenamiento = math.ceil(numeroDeInstancias * porcentajeEntrenamiento/100)
+
 print("El porcentaje de instancias de entrenamiento es:\t", porcentajeEntrenamiento, "%")
 print("El porcentaje de instancias de prueba es:       \t", 100-porcentajeEntrenamiento, "%")
 print("En consecuencia se determina que")
