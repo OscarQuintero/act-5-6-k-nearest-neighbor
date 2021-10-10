@@ -88,7 +88,7 @@ def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
 def insertarPrediccionParaLaInstancia(fila):
 	instancia = fila[listaAtributos].tolist()
 	print(instancia)
-	prediccion = predecirKNN(instancia, ConjuntoEntrenamiento, nombreClase)
+	prediccion = predecirKNN(instancia, ConjuntoEntrenamiento, nombreClase, K)
 	print(prediccion)
 	print("\n")
 	return prediccion
@@ -188,7 +188,7 @@ print(ConjuntoEntrenamiento)
 print("\n")
 
 print("Generar tabla de predicciones")
-TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, 3)
+TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
 print(TablaDePredicciones)
 print(ConjuntoPrueba)
 
