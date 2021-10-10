@@ -18,6 +18,34 @@ ConjuntoEntrenamiento = pandas.DataFrame()
 ConjuntoPrueba = pandas.DataFrame()
 
 #----------------FUNCTIONS---------------------------------------------
+def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
+	print("generando conjunto entrenamiento")
+	
+	listaIndicesAleatorios = []
+	k = 0
+	while len(listaIndicesAleatorios) < numInstanciasE:
+		num = random.randint(0,numeroDeInstancias-1)
+		
+		if num not in listaIndicesAleatorios:
+			listaIndicesAleatorios.append(num)
+	ConjuntoE = ConjuntoInicial.iloc[listaIndicesAleatorios]
+
+	
+	listaIndicesPrueba = []
+	for h in range(numeroDeInstancias):
+		listaIndicesPrueba.append(h)
+
+	for i in listaIndicesAleatorios:
+		if i in listaIndicesPrueba:
+			listaIndicesPrueba.remove(i)
+
+	ConjuntoPrueba = ConjuntoInicial.iloc[listaIndicesPrueba]
+	ConjuntoP = ConjuntoPrueba
+	ConjuntosResultantes = {'Entrenamiento': ConjuntoE, 'Prueba': ConjuntoP}
+
+	return ConjuntosResultantes
+
+
 
 #----------------BEGIN-------------------------------------------------
 print("Actividad 5.6 - Implementación ")
@@ -59,33 +87,6 @@ print("Direccion de memoria antes")
 print(id(ConjuntoEntrenamiento))
 print("\n")
 
-def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
-	print("generando conjunto entrenamiento")
-	
-	listaIndicesAleatorios = []
-	k = 0
-	while len(listaIndicesAleatorios) < numInstanciasE:
-		num = random.randint(0,numeroDeInstancias-1)
-		
-		if num not in listaIndicesAleatorios:
-			listaIndicesAleatorios.append(num)
-	ConjuntoE = ConjuntoInicial.iloc[listaIndicesAleatorios]
-
-	
-	listaIndicesPrueba = []
-	for h in range(numeroDeInstancias):
-		listaIndicesPrueba.append(h)
-
-	for i in listaIndicesAleatorios:
-		if i in listaIndicesPrueba:
-			listaIndicesPrueba.remove(i)
-
-	ConjuntoPrueba = ConjuntoInicial.iloc[listaIndicesPrueba]
-	ConjuntoP = ConjuntoPrueba
-	ConjuntosResultantes = {'Entrenamiento': ConjuntoE, 'Prueba': ConjuntoP}
-
-	return ConjuntosResultantes
-
 
 
 ConjuntosResultantes = generarConjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento)
@@ -115,6 +116,7 @@ print("\n")
 print("Evaluar porcentaje de aciertos o error cuadrático medio")
 print("Evaluar capacidad predicitiva")
 print("\n")
+
 
 
 
