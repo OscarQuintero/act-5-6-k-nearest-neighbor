@@ -7,10 +7,12 @@ import pandas
 #----------------VARIABLES---------------------------------------------
 
 nombreArchivoCSV = "airfoil_self_noise.csv"
-nombreClase = "Sound"
+nombreClase = "Sound Level (TARGET)"
 porcentajeEntrenamiento = 0
 numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
+numeroAtributos = 0
+listaAtributos = []
 
 #----------------FUNCTIONS---------------------------------------------
 
@@ -53,12 +55,32 @@ def distanciaHamming(tupla1, tupla2):
 
 		return sumaHamming
 	 
-def predecirKNN(tupla, ConjuntoE, nombreClase, k=1):
+def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la clase
 	print(tupla)
 	print(ConjuntoE)
-	print(nombreClase)
-	print(k)
-	return 0
+	
+	print("Tabla de distancias")
+	TablaDeDistancias = ConjuntoE[listaAtributos]
+	TablaDeDistancias['Distancia'] = TablaDeDistancias.apply(lambda fila: distanciaEuclideana(tupla,fila[listaAtributos].tolist()), axis=1)
+	print(TablaDeDistancias)
+
+	minDistancia = TablaDeDistancias['Distancia'].min()
+	print("Minimo: ", minDistancia)
+	
+	KNearestNeighborsTable = TablaDeDistancias[TablaDeDistancias['Distancia'] == minDistancia]
+	print(KNearestNeighborsTable)
+	ListaIndicesKNN = KNearestNeighborsTable.index.tolist()
+	print(ListaIndicesKNN)
+	KNearestNeighborsTable = ConjuntoInicial.iloc[ListaIndicesKNN]
+	print(KNearestNeighborsTable) #No se pudo desde ConjuntoE por desbordamiento
+	print(KNearestNeighborsTable[nombreClase].mean())
+	return KNearestNeighborsTable[nombreClase].mean()
+
+def f(fila, tupla):
+	print(fila[listaAtributos].tolist())
+	print(tupla)
+	print("\n")
+	return 30
 
 #----------------BEGIN-------------------------------------------------
 print("--------------------------------------------------------")
@@ -85,6 +107,10 @@ print("\n")
 
 
 numeroDeInstancias = len(ConjuntoInicial.index)
+
+listaAtributos = ConjuntoInicial.columns.tolist()
+listaAtributos.remove(nombreClase)
+numeroAtributos = len(listaAtributos)
 
 
 print("Se han encontrado ", numeroDeInstancias, " instancias en el Conjunto Inicial")
@@ -143,12 +169,15 @@ print("Hacer predicciones para el conjunto de prueba")
 print("Mostrar predicciones y valores reales")
 
 print("Prueba con predicciones")
-tupla = [1,3,5,6]
+tupla = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
 res = predecirKNN(tupla, ConjuntoEntrenamiento, nombreClase)
 print(res)
 print("\n")
+print(ConjuntoEntrenamiento)
 
 print("Por definir mas funciones....")
+
+
 
 print("\n")
 print("Evaluar porcentaje de aciertos o error cuadrático medio")
