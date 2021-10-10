@@ -8,6 +8,7 @@ import pandas
 
 nombreArchivoCSV = "airfoil_self_noise.csv"
 nombreClase = "Sound Level (TARGET)"
+nombrePrediccion = 'Predicción'
 porcentajeEntrenamiento = 0
 numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
@@ -78,7 +79,7 @@ def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la cla
 
 def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
 	TablaConPredicciones = ConjuntoP
-	TablaConPredicciones['Predicción'] = TablaConPredicciones.apply(insertarPrediccionParaLaInstancia, axis=1)
+	TablaConPredicciones[nombrePrediccion] = TablaConPredicciones.apply(insertarPrediccionParaLaInstancia, axis=1)
 	return TablaConPredicciones
 
 def insertarPrediccionParaLaInstancia(fila):
@@ -187,6 +188,7 @@ print("Generar tabla de predicciones")
 TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, 3)
 print(TablaDePredicciones)
 print(ConjuntoPrueba)
+
 print("Por definir mas funciones....")
 
 
