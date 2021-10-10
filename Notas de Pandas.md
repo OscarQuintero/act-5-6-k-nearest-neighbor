@@ -70,3 +70,10 @@ Por condiciones
 	df[ df["ColumnaX"].str.contains("cadena")]
 
 	listaAtributos = ConjuntoInicial.columns.tolist()
+
+Crear columna
+
+	df['Distancia'] = df.apply(funcion , axis=1)
+Nota: toda la fila pasa como parametro a la funcion
+y dentro hay que acceder a cada columna por separado
+
