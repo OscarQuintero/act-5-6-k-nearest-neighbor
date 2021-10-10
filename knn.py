@@ -3,6 +3,7 @@ import os
 import random
 import math
 import pandas
+import numpy
 
 #----------------VARIABLES---------------------------------------------
 
@@ -20,6 +21,34 @@ ConjuntoEntrenamiento = pandas.DataFrame()
 ConjuntoPrueba = pandas.DataFrame()
 
 #----------------FUNCTIONS---------------------------------------------
+def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
+	print("generando conjunto entrenamiento")
+	
+	listaIndicesAleatorios = []
+	k = 0
+	while len(listaIndicesAleatorios) < numInstanciasE:
+		num = random.randint(0,numeroDeInstancias-1)
+		
+		if num not in listaIndicesAleatorios:
+			listaIndicesAleatorios.append(num)
+	ConjuntoE = ConjuntoInicial.iloc[listaIndicesAleatorios]
+
+	
+	listaIndicesPrueba = []
+	for h in range(numeroDeInstancias):
+		listaIndicesPrueba.append(h)
+
+	for i in listaIndicesAleatorios:
+		if i in listaIndicesPrueba:
+			listaIndicesPrueba.remove(i)
+
+	ConjuntoPrueba = ConjuntoInicial.iloc[listaIndicesPrueba]
+	ConjuntoP = ConjuntoPrueba
+	ConjuntosResultantes = {'Entrenamiento': ConjuntoE, 'Prueba': ConjuntoP}
+
+	return ConjuntosResultantes
+
+
 
 def normalizar(valor, vMin, vMax):
 	return (float(valor) - float(vMin))/(float(vMax) - float(vMin))
@@ -164,24 +193,19 @@ print("Se usarán ", numeroDeInstanciasEntrenamiento," instancias para entrenami
 print("se usarán ", numeroDeInstancias - numeroDeInstanciasEntrenamiento," instancias para prueba.")
 print("\n")
 
-listaIndicesAleatorios = []
-k = 0
-while len(listaIndicesAleatorios) < numeroDeInstanciasEntrenamiento:
-	num = random.randint(0,numeroDeInstancias-1)
-	
-	if num not in listaIndicesAleatorios:
-		listaIndicesAleatorios.append(num)
-ConjuntoEntrenamiento = ConjuntoInicial.iloc[listaIndicesAleatorios]
+print("Direccion de memoria antes")
+print(id(ConjuntoEntrenamiento))
+print("\n")
 
-listaIndicesPrueba = []
-for h in range(numeroDeInstancias):
-	listaIndicesPrueba.append(h)
 
-for i in listaIndicesAleatorios:
-	if i in listaIndicesPrueba:
-		listaIndicesPrueba.remove(i)
 
-ConjuntoPrueba = ConjuntoInicial.iloc[listaIndicesPrueba]
+ConjuntosResultantes = generarConjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento)
+ConjuntoEntrenamiento = ConjuntosResultantes['Entrenamiento']
+ConjuntoPrueba = ConjuntosResultantes['Prueba']
+
+print("Direccion de memoria despues")
+print(id(ConjuntoEntrenamiento))
+print("\n")
 
 print("Conjunto de Datos de Entrenamiento:")
 print(ConjuntoEntrenamiento)
@@ -229,6 +253,7 @@ print("El Error Cadrático Medio (MSE) es: ", MSE)
 
 print("\n")
 print("\n")
+
 
 
 
