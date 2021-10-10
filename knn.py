@@ -17,6 +17,20 @@ numeroDeInstanciasEntrenamiento = 0
 def normalizar(valor, vMin, vMax):
 	return (float(valor) - float(vMin))/(float(vMax) - float(vMin))
 
+def distanciaEuclideana(tupla1, tupla2): #Con listas
+	n = len(tupla1)
+	if n != len(tupla2):
+		return "Las dimensiones de las listas no coinciden"
+	else:
+		sumaCuadrados = 0
+		for x in range(n):
+			sumaCuadrados += (tupla2[x] - tupla1[x])**2
+			
+		return sumaCuadrados**0.5
+
+
+	 
+
 
 #----------------BEGIN-------------------------------------------------
 print("Actividad 5.6 - Implementación ")
@@ -93,6 +107,6 @@ print("Evaluar porcentaje de aciertos o error cuadrático medio")
 print("Evaluar capacidad predicitiva")
 print("\n")
 
-print("Prueba con normalización")
-print(normalizar(3,2,5))
+print("Prueba con distancias")
+print(distanciaEuclideana([0,3,3,5],[8,90,4,1]))
 
