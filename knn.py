@@ -3,6 +3,7 @@ import os
 import random
 import math
 import pandas
+import numpy
 
 #----------------VARIABLES---------------------------------------------
 
@@ -14,7 +15,7 @@ numeroDeInstanciasEntrenamiento = 0
 K = 1
 ConjuntoInicial = pandas.DataFrame()
 ConjuntoEntrenamiento = pandas.DataFrame()
-ConjuntoPrueba = pandas.DataFrame()
+# ConjuntoPrueba = pandas.DataFrame()
 
 #----------------FUNCTIONS---------------------------------------------
 
@@ -54,15 +55,31 @@ print("Se usarán ", numeroDeInstanciasEntrenamiento," instancias para entrenami
 print("se usarán ", numeroDeInstancias - numeroDeInstanciasEntrenamiento," instancias para prueba.")
 print("\n")
 
-def generarCoonjuntoEntrenamiento(ConjuntoI,numInstanciasE):
+print("Direccion de memoria antes")
+print(id(ConjuntoEntrenamiento))
+print("\n")
+
+def generarCoonjuntoEntrenamiento(ConjuntoI,numInstanciasE, ConjuntoE):
+	print("generando conjunto entrenamiento")
+	ConjuntoEntrenamiento = ConjuntoE
+	print(id(ConjuntoE))
+	print(id(ConjuntoEntrenamiento))
+	print("\n")
 	listaIndicesAleatorios = []
 	k = 0
-	while len(listaIndicesAleatorios) < numeroDeInstanciasEntrenamiento:
+	while len(listaIndicesAleatorios) < numInstanciasE:
 		num = random.randint(0,numeroDeInstancias-1)
 		
 		if num not in listaIndicesAleatorios:
 			listaIndicesAleatorios.append(num)
-	ConjuntoEntrenamiento = ConjuntoInicial.iloc[listaIndicesAleatorios]
+	ConjuntoE = ConjuntoInicial.iloc[listaIndicesAleatorios]
+
+	print(id(ConjuntoE))
+	print(id(ConjuntoEntrenamiento))
+	print("\n")
+	
+	print(ConjuntoE)
+
 
 	listaIndicesPrueba = []
 	for h in range(numeroDeInstancias):
@@ -78,15 +95,17 @@ def generarCoonjuntoEntrenamiento(ConjuntoI,numInstanciasE):
 
 
 
-generarCoonjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento)
+generarCoonjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento, ConjuntoEntrenamiento.copy(False))
 
-
+print("Direccion de memoria despues")
+print(id(ConjuntoEntrenamiento))
+print("\n")
 
 print("Conjunto de Datos de Entrenamiento:")
 print(ConjuntoEntrenamiento)
 print("\n")
 print("Conjunto de Datos de Prueba:")
-print(ConjuntoPrueba)
+# print(ConjuntoPrueba)
 print("\n")
 
 
