@@ -37,7 +37,8 @@ This problem has the following inputs:
 4. Free-stream velocity, in meters per second. 
 5. Suction side displacement thickness, in meters. 
 
-The only output is: 
+The only output is:
+
 6. Scaled sound pressure level, in decibels. 
 
--https://archive.ics.uci.edu/ml/datasets/Airfoil+Self-Noise#
+-[Repositorio Original Airfoil Self-Noise](https://archive.ics.uci.edu/ml/datasets/Airfoil+Self-Noise#)
