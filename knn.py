@@ -76,11 +76,18 @@ def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la cla
 	print(KNearestNeighborsTable[nombreClase].mean())
 	return KNearestNeighborsTable[nombreClase].mean()
 
-def f(fila, tupla):
-	print(fila[listaAtributos].tolist())
-	print(tupla)
+def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
+	TablaConPredicciones = ConjuntoP
+	TablaConPredicciones['Predicción'] = TablaConPredicciones.apply(insertarPrediccionParaLaInstancia, axis=1)
+	return TablaConPredicciones
+
+def insertarPrediccionParaLaInstancia(fila):
+	instancia = fila[listaAtributos].tolist()
+	print(instancia)
+	prediccion = predecirKNN(instancia, ConjuntoEntrenamiento, nombreClase)
+	print(prediccion)
 	print("\n")
-	return 30
+	return prediccion
 
 #----------------BEGIN-------------------------------------------------
 print("--------------------------------------------------------")
@@ -174,7 +181,12 @@ res = predecirKNN(tupla, ConjuntoEntrenamiento, nombreClase)
 print(res)
 print("\n")
 print(ConjuntoEntrenamiento)
+print("\n")
 
+print("Generar tabla de predicciones")
+TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, 3)
+print(TablaDePredicciones)
+print(ConjuntoPrueba)
 print("Por definir mas funciones....")
 
 
