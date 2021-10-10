@@ -11,6 +11,10 @@ nombreClase = "Play"
 porcentajeEntrenamiento = 0
 numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
+K = 1
+ConjuntoInicial = pandas.DataFrame()
+ConjuntoEntrenamiento = pandas.DataFrame()
+ConjuntoPrueba = pandas.DataFrame()
 
 #----------------FUNCTIONS---------------------------------------------
 
@@ -50,24 +54,33 @@ print("Se usarán ", numeroDeInstanciasEntrenamiento," instancias para entrenami
 print("se usarán ", numeroDeInstancias - numeroDeInstanciasEntrenamiento," instancias para prueba.")
 print("\n")
 
-listaIndicesAleatorios = []
-k = 0
-while len(listaIndicesAleatorios) < numeroDeInstanciasEntrenamiento:
-	num = random.randint(0,numeroDeInstancias-1)
-	
-	if num not in listaIndicesAleatorios:
-		listaIndicesAleatorios.append(num)
-ConjuntoEntrenamiento = ConjuntoInicial.iloc[listaIndicesAleatorios]
+def generarCoonjuntoEntrenamiento(ConjuntoI,numInstanciasE):
+	listaIndicesAleatorios = []
+	k = 0
+	while len(listaIndicesAleatorios) < numeroDeInstanciasEntrenamiento:
+		num = random.randint(0,numeroDeInstancias-1)
+		
+		if num not in listaIndicesAleatorios:
+			listaIndicesAleatorios.append(num)
+	ConjuntoEntrenamiento = ConjuntoInicial.iloc[listaIndicesAleatorios]
 
-listaIndicesPrueba = []
-for h in range(numeroDeInstancias):
-	listaIndicesPrueba.append(h)
+	listaIndicesPrueba = []
+	for h in range(numeroDeInstancias):
+		listaIndicesPrueba.append(h)
 
-for i in listaIndicesAleatorios:
-	if i in listaIndicesPrueba:
-		listaIndicesPrueba.remove(i)
+	for i in listaIndicesAleatorios:
+		if i in listaIndicesPrueba:
+			listaIndicesPrueba.remove(i)
 
-ConjuntoPrueba = ConjuntoInicial.iloc[listaIndicesPrueba]
+	ConjuntoPrueba = ConjuntoInicial.iloc[listaIndicesPrueba]
+
+	pass
+
+
+
+generarCoonjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento)
+
+
 
 print("Conjunto de Datos de Entrenamiento:")
 print(ConjuntoEntrenamiento)
