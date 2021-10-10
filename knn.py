@@ -15,7 +15,7 @@ numeroDeInstanciasEntrenamiento = 0
 K = 1
 ConjuntoInicial = pandas.DataFrame()
 ConjuntoEntrenamiento = pandas.DataFrame()
-# ConjuntoPrueba = pandas.DataFrame()
+ConjuntoPrueba = pandas.DataFrame()
 
 #----------------FUNCTIONS---------------------------------------------
 
@@ -59,12 +59,9 @@ print("Direccion de memoria antes")
 print(id(ConjuntoEntrenamiento))
 print("\n")
 
-def generarCoonjuntoEntrenamiento(ConjuntoI,numInstanciasE, ConjuntoE):
+def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
 	print("generando conjunto entrenamiento")
-	ConjuntoEntrenamiento = ConjuntoE
-	print(id(ConjuntoE))
-	print(id(ConjuntoEntrenamiento))
-	print("\n")
+	
 	listaIndicesAleatorios = []
 	k = 0
 	while len(listaIndicesAleatorios) < numInstanciasE:
@@ -74,13 +71,7 @@ def generarCoonjuntoEntrenamiento(ConjuntoI,numInstanciasE, ConjuntoE):
 			listaIndicesAleatorios.append(num)
 	ConjuntoE = ConjuntoInicial.iloc[listaIndicesAleatorios]
 
-	print(id(ConjuntoE))
-	print(id(ConjuntoEntrenamiento))
-	print("\n")
 	
-	print(ConjuntoE)
-
-
 	listaIndicesPrueba = []
 	for h in range(numeroDeInstancias):
 		listaIndicesPrueba.append(h)
@@ -90,12 +81,16 @@ def generarCoonjuntoEntrenamiento(ConjuntoI,numInstanciasE, ConjuntoE):
 			listaIndicesPrueba.remove(i)
 
 	ConjuntoPrueba = ConjuntoInicial.iloc[listaIndicesPrueba]
+	ConjuntoP = ConjuntoPrueba
+	ConjuntosResultantes = {'Entrenamiento': ConjuntoE, 'Prueba': ConjuntoP}
 
-	pass
+	return ConjuntosResultantes
 
 
 
-generarCoonjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento, ConjuntoEntrenamiento.copy(False))
+ConjuntosResultantes = generarConjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento)
+ConjuntoEntrenamiento = ConjuntosResultantes['Entrenamiento']
+ConjuntoPrueba = ConjuntosResultantes['Prueba']
 
 print("Direccion de memoria despues")
 print(id(ConjuntoEntrenamiento))
@@ -105,7 +100,7 @@ print("Conjunto de Datos de Entrenamiento:")
 print(ConjuntoEntrenamiento)
 print("\n")
 print("Conjunto de Datos de Prueba:")
-# print(ConjuntoPrueba)
+print(ConjuntoPrueba)
 print("\n")
 
 
