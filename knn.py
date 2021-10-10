@@ -6,8 +6,8 @@ import pandas
 
 #----------------VARIABLES---------------------------------------------
 
-nombreArchivoCSV = "play_db.csv"
-nombreClase = "Play"
+nombreArchivoCSV = "airfoil_self_noise.csv"
+nombreClase = "Sound"
 porcentajeEntrenamiento = 0
 numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
@@ -53,7 +53,12 @@ def distanciaHamming(tupla1, tupla2):
 
 		return sumaHamming
 	 
-
+def predecirKNN(tupla, ConjuntoE, nombreClase, k=1):
+	print(tupla)
+	print(ConjuntoE)
+	print(nombreClase)
+	print(k)
+	return 0
 
 #----------------BEGIN-------------------------------------------------
 print("--------------------------------------------------------")
@@ -137,6 +142,12 @@ print("Hacer función del algoritmo K-NN por tupla")
 print("Hacer predicciones para el conjunto de prueba")
 print("Mostrar predicciones y valores reales")
 
+print("Prueba con predicciones")
+tupla = [1,3,5,6]
+res = predecirKNN(tupla, ConjuntoEntrenamiento, nombreClase)
+print(res)
+print("\n")
+
 print("Por definir mas funciones....")
 
 print("\n")
@@ -144,6 +155,6 @@ print("Evaluar porcentaje de aciertos o error cuadrático medio")
 print("Evaluar capacidad predicitiva")
 print("\n")
 
-print("Prueba con distancias")
-print(distanciaHamming([0,3,3,5],[8,90,3,1]))
+
+
 
