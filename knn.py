@@ -14,6 +14,10 @@ numeroDeInstanciasEntrenamiento = 0
 
 #----------------FUNCTIONS---------------------------------------------
 
+def normalizar(valor, vMin, vMax):
+	return (float(valor) - float(vMin))/(float(vMax) - float(vMin))
+
+
 #----------------BEGIN-------------------------------------------------
 print("Actividad 5.6 - Implementación ")
 print("Algoritmo K Nearest Neighbor")
@@ -89,5 +93,6 @@ print("Evaluar porcentaje de aciertos o error cuadrático medio")
 print("Evaluar capacidad predicitiva")
 print("\n")
 
-
+print("Prueba con normalización")
+print(normalizar(3,2,5))
 
