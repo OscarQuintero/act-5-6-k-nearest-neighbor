@@ -97,6 +97,9 @@ def insertarPrediccionParaLaInstancia(fila):
 	print("\n")
 	return prediccion
 
+def errorCuadrado(fila):
+	return (fila[nombrePrediccion] - fila[nombreClase])**2
+
 #----------------BEGIN-------------------------------------------------
 print("--------------------------------------------------------")
 print("Actividad 5.6 - Implementación ")
@@ -131,7 +134,7 @@ numeroAtributos = len(listaAtributos)
 print("Se han encontrado ", numeroDeInstancias, " instancias en el Conjunto Inicial")
 print("Introduzca el porcentaje de instancias para entrenamiento (sin el signo %)")
 try:
-	porcentajeEntrenamiento = int(input("Porcentaje de instancias de entrenamiento: "))
+	porcentajeEntrenamiento = float(input("Porcentaje de instancias de entrenamiento: "))
 	numeroDeInstanciasEntrenamiento = math.ceil(numeroDeInstancias * porcentajeEntrenamiento/100)
 except ValueError:
 	print("Valor no valido")
@@ -204,6 +207,10 @@ print("\n")
 print("Evaluar porcentaje de aciertos o error cuadrático medio")
 print("Evaluar capacidad predicitiva")
 print("\n")
+
+TablaComparacion = TablaDePredicciones[[nombreClase, nombrePrediccion]]
+TablaComparacion['Error Cuadrado'] = TablaComparacion.apply(errorCuadrado, axis=1)
+print(TablaComparacion)
 
 
 
