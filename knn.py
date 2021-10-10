@@ -39,7 +39,19 @@ def distanciaManhattan(tupla1, tupla2):
 
 		return sumaValoresAbsolutos
 
+def distanciaHamming(tupla1, tupla2):
+	n = len(tupla1)
+	if n != len(tupla2):
+		return "Las dimensiones de las listas no coinciden"
+	else:
+		sumaHamming = 0
+		for x in range(n):
+			if tupla1[x] == tupla2[x]:
+				sumaHamming += 0
+			else:
+				sumaHamming += 1
 
+		return sumaHamming
 	 
 
 
@@ -119,5 +131,5 @@ print("Evaluar capacidad predicitiva")
 print("\n")
 
 print("Prueba con distancias")
-print(distanciaManhattan([0,3,3,5],[8,90,4,1]))
+print(distanciaHamming([0,3,3,5],[8,90,3,1]))
 
