@@ -14,6 +14,10 @@ numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
 numeroAtributos = 0
 listaAtributos = []
+K = 1
+ConjuntoInicial = pandas.DataFrame()
+ConjuntoEntrenamiento = pandas.DataFrame()
+ConjuntoPrueba = pandas.DataFrame()
 
 #----------------FUNCTIONS---------------------------------------------
 
