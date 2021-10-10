@@ -28,6 +28,17 @@ def distanciaEuclideana(tupla1, tupla2): #Con listas
 			
 		return sumaCuadrados**0.5
 
+def distanciaManhattan(tupla1, tupla2):
+	n = len(tupla1)
+	if n != len(tupla2):
+		return "Las dimensiones de las listas no coinciden"
+	else:
+		sumaValoresAbsolutos = 0
+		for x in range(n):
+			sumaValoresAbsolutos += abs(tupla1[x] - tupla2[x])
+
+		return sumaValoresAbsolutos
+
 
 	 
 
@@ -108,5 +119,5 @@ print("Evaluar capacidad predicitiva")
 print("\n")
 
 print("Prueba con distancias")
-print(distanciaEuclideana([0,3,3,5],[8,90,4,1]))
+print(distanciaManhattan([0,3,3,5],[8,90,4,1]))
 
