@@ -19,6 +19,8 @@ K = 1
 ConjuntoInicial = pandas.DataFrame()
 ConjuntoEntrenamiento = pandas.DataFrame()
 ConjuntoPrueba = pandas.DataFrame()
+MSE = 0
+PorcentajeAciertos = 0
 
 #----------------FUNCTIONS---------------------------------------------
 def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
@@ -138,7 +140,17 @@ def errorCuadraticoMedio(TablaC, nombreClase, nombrePrediccion):
 	TablaC['Error Cuadrado'] = TablaC.apply(errorCuadrado, axis=1)
 	
 	return TablaC['Error Cuadrado'].mean()
+def esAcierto(fila):
+	
+	if fila[nombreClase]==fila[nombrePrediccion]:
+		return 100
+	else:
+		return 0
 
+def porcentajeAciertos(TablaC, nombreClase, nombrePrediccion):
+	TablaC['Acierto'] = TablaC.apply(esAcierto, axis=1)
+
+	return TablaC['Acierto'].mean()
 #----------------BEGIN-------------------------------------------------
 print("--------------------------------------------------------")
 print("Actividad 5.6 - Implementación ")
@@ -233,23 +245,24 @@ TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoE
 print(TablaDePredicciones)
 print(ConjuntoPrueba)
 
-print("Por definir mas funciones....")
+print("Por definir más funciones....")
 
 
 
 print("\n")
-print("Evaluar porcentaje de aciertos o error cuadrático medio")
-print("Evaluar capacidad predicitiva")
+print("Evaluando capacidad predicitiva...")
 print("\n")
 
 
 TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
+PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
 MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
 
 print("La clase del conjunto de datos es numérica")
 print(TablaComparacion)
 print("\n")
 print("El Error Cadrático Medio (MSE) es: ", MSE)
+print("El porcentaje de Aciertos es: ", PorcentajeAciertos, " %")
 
 print("\n")
 print("\n")
