@@ -57,25 +57,28 @@ def distanciaHamming(tupla1, tupla2):
 		return sumaHamming
 	 
 def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la clase
-	print(tupla)
-	print(ConjuntoE)
-	
-	print("Tabla de distancias")
+	print("-----")
+	print("Tabla de distancias para ", tupla)
 	TablaDeDistancias = ConjuntoE[listaAtributos]
 	TablaDeDistancias['Distancia'] = TablaDeDistancias.apply(lambda fila: distanciaEuclideana(tupla,fila[listaAtributos].tolist()), axis=1)
+	TablaDeDistancias = TablaDeDistancias.sort_values('Distancia')
 	print(TablaDeDistancias)
 
+
 	minDistancia = TablaDeDistancias['Distancia'].min()
-	print("Minimo: ", minDistancia)
+	# print("Minimo: ", minDistancia)	
+
 	
-	KNearestNeighborsTable = TablaDeDistancias[TablaDeDistancias['Distancia'] == minDistancia]
+	KNearestNeighborsTable = TablaDeDistancias.head(k)
 	print(KNearestNeighborsTable)
 	ListaIndicesKNN = KNearestNeighborsTable.index.tolist()
-	print(ListaIndicesKNN)
+	
 	KNearestNeighborsTable = ConjuntoInicial.iloc[ListaIndicesKNN]
 	print(KNearestNeighborsTable) #No se pudo desde ConjuntoE por desbordamiento
-	print(KNearestNeighborsTable[nombreClase].mean())
+	
+	print("-----")
 	return KNearestNeighborsTable[nombreClase].mean()
+	
 
 def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
 	TablaConPredicciones = ConjuntoP
@@ -178,7 +181,7 @@ print("Mostrar predicciones y valores reales")
 
 print("Prueba con predicciones")
 tupla = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
-res = predecirKNN(tupla, ConjuntoEntrenamiento, nombreClase)
+res = predecirKNN(tupla, ConjuntoEntrenamiento, nombreClase, 3)
 print(res)
 print("\n")
 print(ConjuntoEntrenamiento)
