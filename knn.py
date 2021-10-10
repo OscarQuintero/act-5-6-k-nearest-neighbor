@@ -56,8 +56,10 @@ def distanciaHamming(tupla1, tupla2):
 
 
 #----------------BEGIN-------------------------------------------------
+print("--------------------------------------------------------")
 print("Actividad 5.6 - Implementación ")
 print("Algoritmo K Nearest Neighbor")
+print("--------------------------------------------------------")
 print("\n")
 
 print("Cargando Conjunto de Datos desde ", nombreArchivoCSV, "...")
