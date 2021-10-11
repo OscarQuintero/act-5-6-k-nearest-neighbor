@@ -293,11 +293,13 @@ if True:
 	print("\n")
 	print("\n")
 
+	
 	# Pendiente:
 	# -Normalizar
 	# -Corregir copia de dataframes por copia y valor
 	# -Captar tipos de datos
 	# -Atributos categoricos
+
 
 
 
