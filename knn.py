@@ -250,7 +250,7 @@ print("\n")
 print("\n")
 
 print("La clase es numérica?", claseNumerica)
-if False:
+if True:
 	
 	print("Generar tabla de predicciones")
 	TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
@@ -263,8 +263,10 @@ if False:
 
 
 	TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
-	PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
-	MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
+	if claseNumerica:
+		MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
+	else:
+		PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
 
 	print("La clase del conjunto de datos es numérica")
 	print(TablaComparacion)
