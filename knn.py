@@ -7,10 +7,10 @@ import numpy
 
 #----------------VARIABLES---------------------------------------------
 
-nombreArchivoCSV = "iris.csv"
-nombreClase = "Class of Iris (TARGET)"
+nombreArchivoCSV = "airfoil_self_noise.csv"
+nombreClase = "Sound Level (TARGET)"
 nombrePrediccion = 'Predicción'
-claseNumerica = False
+claseNumerica = True
 porcentajeEntrenamiento = 0
 numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
@@ -24,6 +24,12 @@ MSE = 0
 PorcentajeAciertos = 0
 
 #----------------FUNCTIONS---------------------------------------------
+def limpiarPantalla():	
+	if(os.name == "posix"):
+		os.system("clear")
+	elif(os.name == "ct" or os.name == "nt" or os.name == "dos"):
+		os.system("cls")
+
 def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
 	print("generando conjunto entrenamiento")
 	
@@ -117,9 +123,10 @@ def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la cla
 
 	if claseNumerica:
 		result = KNearestNeighborsTable[nombreClase].mean()
+		return result
 	else: 
 		result = KNearestNeighborsTable[nombreClase].mode().head(1)
-	return result.iloc[0]
+		return result.iloc[0]
 	
 
 def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
@@ -159,6 +166,7 @@ def porcentajeAciertos(TablaC, nombreClase, nombrePrediccion):
 
 	return TablaC['Acierto'].mean()
 #----------------BEGIN-------------------------------------------------
+limpiarPantalla()
 print("--------------------------------------------------------")
 print("Actividad 5.6 - Implementación ")
 print("Algoritmo K Nearest Neighbor")
