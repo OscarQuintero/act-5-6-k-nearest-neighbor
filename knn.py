@@ -95,6 +95,7 @@ def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la cla
 	print("-----")
 	print("Tabla de distancias para ", tupla)
 	TablaDeDistancias = ConjuntoE[listaAtributos]
+	# TablaDeDistancias = TablaDeDistancias
 	TablaDeDistancias['Distancia'] = TablaDeDistancias.apply(lambda fila: distanciaEuclideana(tupla,fila[listaAtributos].tolist()), axis=1)
 	TablaDeDistancias = TablaDeDistancias.sort_values('Distancia')
 	print(TablaDeDistancias)
