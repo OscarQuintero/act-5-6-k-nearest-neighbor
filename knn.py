@@ -167,6 +167,11 @@ def porcentajeAciertos(TablaC, nombreClase, nombrePrediccion):
 	return TablaC['Acierto'].mean()
 
 def normalizarColumna(Tabla, columna):
+	vmin = Tabla[columna].min()
+	vmax = Tabla[columna].max()
+	print(vmin)
+	print(vmax)
+	Tabla[columna] = Tabla.apply(lambda fila: normalizar(fila[columna],vmin,vmax), axis=1)
 	return Tabla
 #----------------BEGIN-------------------------------------------------
 limpiarPantalla()
