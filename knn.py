@@ -167,7 +167,7 @@ def porcentajeAciertos(TablaC, nombreClase, nombrePrediccion):
 	return TablaC['Acierto'].mean()
 
 def normalizarColumna(Tabla, columna):
-	pass
+	return Tabla
 #----------------BEGIN-------------------------------------------------
 limpiarPantalla()
 print("--------------------------------------------------------")
@@ -262,14 +262,14 @@ print("Mostrar predicciones y valores reales")
 print("Prueba con predicciones")
 tuplaI = [5.9,3.0,5.1,1.8]
 tuplaA = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
-res = predecirKNN(tuplaI, ConjuntoEntrenamiento, nombreClase, K)
+res = predecirKNN(tuplaA, ConjuntoEntrenamiento, nombreClase, K)
 print(res)
 print("\n")
 # print(ConjuntoEntrenamiento)
 print("\n")
 
 print("La clase es numérica?", claseNumerica)
-if True:
+if False:
 	
 	print("Generar tabla de predicciones")
 	TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
@@ -296,7 +296,13 @@ if True:
 	print("\n")
 	print("\n")
 
-	
+print("Pruebas de normalizar columnas")
+print("Antes de normalizar")
+print(ConjuntoInicial.head())
+ConjuntoInicial =  normalizarColumna(ConjuntoInicial, 'Frequency')
+
+print("Después de normalizar")
+print(ConjuntoInicial.head())
 	# Pendiente:
 	# -Normalizar
 	# -Corregir copia de dataframes por copia y valor
