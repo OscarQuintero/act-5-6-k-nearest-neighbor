@@ -16,7 +16,7 @@ numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
 numeroAtributos = 0
 listaAtributos = []
-K = 3
+K = 1
 ConjuntoInicial = pandas.DataFrame()
 ConjuntoEntrenamiento = pandas.DataFrame()
 ConjuntoPrueba = pandas.DataFrame()
@@ -204,6 +204,14 @@ except ValueError:
 	else:
 		porcentajeEntrenamiento = 70
 		numeroDeInstanciasEntrenamiento = math.ceil(numeroDeInstancias * porcentajeEntrenamiento/100)
+print("Introduzca el valor de vecinos cercanos a la tupla ")
+try:
+	K = int(input("K: "))
+	
+except ValueError:
+	print("Valor no valido")
+	print("Finalizando el programa.... :(")
+	exit()	
 
 print("El porcentaje de instancias de entrenamiento es:\t", porcentajeEntrenamiento, "%")
 print("El porcentaje de instancias de prueba es:       \t", 100-porcentajeEntrenamiento, "%")
