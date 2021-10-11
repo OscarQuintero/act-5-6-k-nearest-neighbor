@@ -7,10 +7,10 @@ import numpy
 
 #----------------VARIABLES---------------------------------------------
 
-nombreArchivoCSV = "airfoil_self_noise.csv"
-nombreClase = "Sound Level (TARGET)"
+nombreArchivoCSV = "iris.csv"
+nombreClase = "Class of Iris (TARGET)"
 nombrePrediccion = 'Predicción'
-claseNumerica = True
+claseNumerica = False
 porcentajeEntrenamiento = 0
 numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
@@ -114,7 +114,12 @@ def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la cla
 	print(KNearestNeighborsTable) #No se pudo desde ConjuntoE por desbordamiento
 	
 	print("-----")
-	return KNearestNeighborsTable[nombreClase].mean()
+
+	if claseNumerica:
+		result = KNearestNeighborsTable[nombreClase].mean()
+	else: 
+		result = KNearestNeighborsTable[nombreClase].mode().head(1)
+	return result.iloc[0]
 	
 
 def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
@@ -236,13 +241,15 @@ print("Hacer predicciones para el conjunto de prueba")
 print("Mostrar predicciones y valores reales")
 
 print("Prueba con predicciones")
-tupla = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
-res = predecirKNN(tupla, ConjuntoEntrenamiento, nombreClase, K)
+tuplaI = [5.9,3.0,5.1,1.8]
+tuplaA = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
+res = predecirKNN(tuplaI, ConjuntoEntrenamiento, nombreClase, K)
 print(res)
 print("\n")
-print(ConjuntoEntrenamiento)
+# print(ConjuntoEntrenamiento)
 print("\n")
 
+print("La clase es numérica?", claseNumerica)
 if False:
 	
 	print("Generar tabla de predicciones")
@@ -267,7 +274,7 @@ if False:
 
 	print("\n")
 	print("\n")
-print("La clase es numérica?", claseNumerica)
+
 
 
 
