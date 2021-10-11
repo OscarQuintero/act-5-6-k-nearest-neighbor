@@ -10,12 +10,13 @@ import numpy
 nombreArchivoCSV = "airfoil_self_noise.csv"
 nombreClase = "Sound Level (TARGET)"
 nombrePrediccion = 'Predicción'
+claseNumerica = True
 porcentajeEntrenamiento = 0
 numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
 numeroAtributos = 0
 listaAtributos = []
-K = 1
+K = 3
 ConjuntoInicial = pandas.DataFrame()
 ConjuntoEntrenamiento = pandas.DataFrame()
 ConjuntoPrueba = pandas.DataFrame()
@@ -203,6 +204,7 @@ print("El porcentaje de instancias de prueba es:       \t", 100-porcentajeEntren
 print("En consecuencia se determina que")
 print("Se usarán ", numeroDeInstanciasEntrenamiento," instancias para entrenamiento y")
 print("se usarán ", numeroDeInstancias - numeroDeInstanciasEntrenamiento," instancias para prueba.")
+print("Se usarán K: ", K, " vecinos cercanos")
 print("\n")
 
 print("Direccion de memoria antes")
@@ -234,38 +236,37 @@ print("Mostrar predicciones y valores reales")
 
 print("Prueba con predicciones")
 tupla = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
-res = predecirKNN(tupla, ConjuntoEntrenamiento, nombreClase, 3)
+res = predecirKNN(tupla, ConjuntoEntrenamiento, nombreClase, K)
 print(res)
 print("\n")
 print(ConjuntoEntrenamiento)
 print("\n")
 
-print("Generar tabla de predicciones")
-TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
-print(TablaDePredicciones)
-print(ConjuntoPrueba)
+if False:
+	
+	print("Generar tabla de predicciones")
+	TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
+	print(TablaDePredicciones)
+	# print(ConjuntoPrueba)
 
-print("Por definir más funciones....")
-
-
-
-print("\n")
-print("Evaluando capacidad predicitiva...")
-print("\n")
+	print("\n")
+	print("Evaluando capacidad predicitiva...")
+	print("\n")
 
 
-TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
-PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
-MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
+	TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
+	PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
+	MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
 
-print("La clase del conjunto de datos es numérica")
-print(TablaComparacion)
-print("\n")
-print("El Error Cadrático Medio (MSE) es: ", MSE)
-print("El porcentaje de Aciertos es: ", PorcentajeAciertos, " %")
+	print("La clase del conjunto de datos es numérica")
+	print(TablaComparacion)
+	print("\n")
+	print("El Error Cuadrático Medio (MSE) es: ", MSE)
+	print("El porcentaje de Aciertos es: ", PorcentajeAciertos, " %")
 
-print("\n")
-print("\n")
+	print("\n")
+	print("\n")
+print("La clase es numérica?", claseNumerica)
 
 
 
