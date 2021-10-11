@@ -165,6 +165,9 @@ def porcentajeAciertos(TablaC, nombreClase, nombrePrediccion):
 	TablaC['Acierto'] = TablaC.apply(esAcierto, axis=1)
 
 	return TablaC['Acierto'].mean()
+
+def normalizarColumna(Tabla, columna):
+	pass
 #----------------BEGIN-------------------------------------------------
 limpiarPantalla()
 print("--------------------------------------------------------")
