@@ -259,14 +259,14 @@ print("Mostrar predicciones y valores reales")
 print("Prueba con predicciones")
 tuplaI = [5.9,3.0,5.1,1.8]
 tuplaA = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
-res = predecirKNN(tuplaI, ConjuntoEntrenamiento, nombreClase, K)
+res = predecirKNN(tuplaA, ConjuntoEntrenamiento, nombreClase, K)
 print(res)
 print("\n")
 # print(ConjuntoEntrenamiento)
 print("\n")
 
 print("La clase es numérica?", claseNumerica)
-if True:
+if False:
 	
 	print("Generar tabla de predicciones")
 	TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
