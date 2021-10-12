@@ -7,8 +7,15 @@ import numpy
 
 #----------------VARIABLES---------------------------------------------
 
-nombreArchivoCSV = "airfoil_self_noise.csv"
-nombreClase = "Sound Level (TARGET)"
+# nombreArchivoCSV = "airfoil_self_noise.csv"
+# nombreClase = "Sound Level (TARGET)"
+
+# nombreArchivoCSV = "iris.csv"
+# nombreClase = "Class of Iris (TARGET)"
+
+nombreArchivoCSV = "play_db.csv"
+nombreClase = "Play"
+
 nombrePrediccion = 'Predicción'
 claseNumerica = True
 porcentajeEntrenamiento = 0
@@ -317,9 +324,9 @@ print("Aplicando Algoritmo K Nearest Neighbor ....")
 input("Presone ENTER para continuar...")
 
 print("Prueba con predicciones")
-tuplaI = [5.9,3.0,5.1,1.8] 				#debe resultar: Iris-virginica
+tuplaI = [0.444444,0.416667,0.694915,0.708333] 				#debe resultar: Iris-virginica
 tuplaA = [0.030303,0.000000,1.000000,1.000000,0.039005] #debe resultar: 126.201
-res = predecirKNN(tuplaA, ConjuntoEntrenamiento, nombreClase, K)
+res = predecirKNN(tuplaI, ConjuntoEntrenamiento, nombreClase, K)
 print("\n")
 # print(ConjuntoEntrenamiento)
 print("\n")
