@@ -77,4 +77,5 @@ Crear columna
 Nota: toda la fila pasa como parametro a la funcion
 y dentro hay que acceder a cada columna por separado
 
-by_year = planets.sort_values('year',ascending=False)
+	by_year = planets.sort_values('year',ascending=False)
+	df[col] = df[col].astype(col_type)
