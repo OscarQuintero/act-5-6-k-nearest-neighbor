@@ -59,9 +59,8 @@ def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
 	return ConjuntosResultantes
 
 
-
-def normalizar(valor, vMin, vMax):
-	return (float(valor) - float(vMin))/(float(vMax) - float(vMin))
+def distancia(tupla1, tupla2):
+	return
 
 def distanciaEuclideana(tupla1, tupla2): #Con listas
 	n = len(tupla1)
@@ -100,19 +99,16 @@ def distanciaHamming(tupla1, tupla2):
 		return sumaHamming
 	 
 def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la clase
-	print("-----")
-	print("Tabla de distancias para ", tupla)
+	print("--------------------------------------------------------")
+	print("Tabla de distancias para")
+	print(tupla)
 	TablaDeDistancias = ConjuntoE[listaAtributos]
 	# TablaDeDistancias = TablaDeDistancias
 	TablaDeDistancias['Distancia'] = TablaDeDistancias.apply(lambda fila: distanciaEuclideana(tupla,fila[listaAtributos].tolist()), axis=1)
 	TablaDeDistancias = TablaDeDistancias.sort_values('Distancia')
-	print(TablaDeDistancias)
-
-
-	minDistancia = TablaDeDistancias['Distancia'].min()
-	# print("Minimo: ", minDistancia)	
-
 	
+	print(TablaDeDistancias)
+	print("Tabla de K =", k, "vecinos más cercanos")
 	KNearestNeighborsTable = TablaDeDistancias.head(k)
 	print(KNearestNeighborsTable)
 	ListaIndicesKNN = KNearestNeighborsTable.index.tolist()
@@ -120,14 +116,15 @@ def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la cla
 	KNearestNeighborsTable = ConjuntoInicial.iloc[ListaIndicesKNN]
 	print(KNearestNeighborsTable) #No se pudo desde ConjuntoE por desbordamiento
 	
-	print("-----")
-
 	if claseNumerica:
 		result = KNearestNeighborsTable[nombreClase].mean()
-		return result
+		print(result)		
 	else: 
 		result = KNearestNeighborsTable[nombreClase].mode().head(1)
-		return result.iloc[0]
+		result = result.iloc[0]
+	print("-------Predicción------>", result)
+	print("\n")
+	return result
 	
 
 def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
@@ -137,9 +134,9 @@ def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
 
 def insertarPrediccionParaLaInstancia(fila):
 	instancia = fila[listaAtributos].tolist()
-	print(instancia)
+	# print(instancia)
 	prediccion = predecirKNN(instancia, ConjuntoEntrenamiento, nombreClase, K)
-	print(prediccion)
+	
 	print("\n")
 	return prediccion
 
@@ -166,6 +163,10 @@ def porcentajeAciertos(TablaC, nombreClase, nombrePrediccion):
 	TablaC['Acierto'] = TablaC.apply(esAcierto, axis=1)
 
 	return TablaC['Acierto'].mean()
+
+def normalizar(valor, vMin, vMax):
+	return (float(valor) - float(vMin))/(float(vMax) - float(vMin))
+
 
 def normalizarColumna(Tabla, columna):
 	vmin = Tabla[columna].min()
@@ -216,7 +217,7 @@ except:
 
 
 print("CSV cargado")
-input("Presione una tecla para continuar...")
+
 print("\n")
 print("Conjunto de Datos: \n")
 
@@ -233,11 +234,13 @@ listaAtributosNumericos[:] = listaAtributos[:]
 for atributo in listaAtributos:
 	if diccTiposAtributos[atributo] != 'Numerical':
 		listaAtributosNumericos.remove(atributo)
+print("Columnas numéricas:")
 print(listaAtributosNumericos)
 print("\n")
 
 print("Normalizando Atributos Numéricos del Conjunto Iicial")
 ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaAtributosNumericos)
+print("\n")
 print("Conjunto de Datos [Normalizado]:")
 print(ConjuntoInicial)
 print("\n")
@@ -282,12 +285,12 @@ else:
 print("Se resolverá el problema por ", tipoDeProblema)
 
 print("\n")
+
 input("Presone ENTER para continuar...")
 
 print("Direccion de memoria antes")
 print(id(ConjuntoEntrenamiento))
 print("\n")
-
 
 
 ConjuntosResultantes = generarConjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento)
@@ -306,24 +309,25 @@ print(ConjuntoPrueba)
 print("\n")
 
 
-print("Algoritmo K Nearest Neighbor ....")
-print("Hacer función del algoritmo K-NN por tupla")
-print("Hacer predicciones para el conjunto de prueba")
-print("Mostrar predicciones y valores reales")
+print("Aplicando Algoritmo K Nearest Neighbor ....")
+
+
+
+
+input("Presone ENTER para continuar...")
 
 print("Prueba con predicciones")
-tuplaI = [5.9,3.0,5.1,1.8]
-tuplaA = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
+tuplaI = [5.9,3.0,5.1,1.8] 				#debe resultar: Iris-virginica
+tuplaA = [0.030303,0.000000,1.000000,1.000000,0.039005] #debe resultar: 126.201
 res = predecirKNN(tuplaA, ConjuntoEntrenamiento, nombreClase, K)
-print(res)
 print("\n")
 # print(ConjuntoEntrenamiento)
 print("\n")
 
 
-if False:
+if True:
 	
-	print("Generar tabla de predicciones")
+	print("Generando tabla de predicciones...")
 	TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
 	print(TablaDePredicciones)
 	# print(ConjuntoPrueba)
