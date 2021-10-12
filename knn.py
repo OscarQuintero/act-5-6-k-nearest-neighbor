@@ -7,8 +7,8 @@ import numpy
 
 #----------------VARIABLES---------------------------------------------
 
-nombreArchivoCSV = "iris.csv"
-nombreClase = "Class of Iris (TARGET)"
+nombreArchivoCSV = "airfoil_self_noise.csv"
+nombreClase = "Sound Level (TARGET)"
 nombrePrediccion = 'Predicción'
 claseNumerica = True
 porcentajeEntrenamiento = 0
@@ -170,8 +170,8 @@ def porcentajeAciertos(TablaC, nombreClase, nombrePrediccion):
 def normalizarColumna(Tabla, columna):
 	vmin = Tabla[columna].min()
 	vmax = Tabla[columna].max()
-	print(vmin)
-	print(vmax)
+	print("Mínimo de la columna ", columna, ": ", vmin)
+	print("Máximo de la columna ", columna, ": ", vmax)
 	Tabla[columna] = Tabla.apply(lambda fila: normalizar(fila[columna],vmin,vmax), axis=1)
 	return Tabla
 
@@ -223,7 +223,6 @@ print("Conjunto de Datos: \n")
 print(ConjuntoInicial)
 print("\n")
 
-
 numeroDeInstancias = len(ConjuntoInicial.index)
 
 listaAtributos = ConjuntoInicial.columns.tolist()
@@ -235,7 +234,12 @@ for atributo in listaAtributos:
 	if diccTiposAtributos[atributo] != 'Numerical':
 		listaAtributosNumericos.remove(atributo)
 print(listaAtributosNumericos)
-
+print("\n")
+print("Normalizando Atributos Numéricos del Conjunto Iicial")
+ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaAtributosNumericos)
+print("Conjunto de Datos [Normalizado]:")
+print(ConjuntoInicial)
+print("\n")
 print("Se han encontrado ", numeroDeInstancias, " instancias en el Conjunto Inicial")
 print("Los tipos de dato para cada atributo son:\n")
 print(datatipes)
@@ -277,6 +281,7 @@ else:
 print("Se resolverá el problema por ", tipoDeProblema)
 
 print("\n")
+input("Presone ENTER para continuar...")
 
 print("Direccion de memoria antes")
 print(id(ConjuntoEntrenamiento))
@@ -342,16 +347,7 @@ if False:
 	print("\n")
 	print("\n")
 
-print("Pruebas de normalizar columnas")
-print("Antes de normalizar")
-print(ConjuntoInicial.tail())
 
-
-
-ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaAtributosNumericos)
-
-print("Después de normalizar")
-print(ConjuntoInicial.tail())
 	# Pendiente:
 	# -Normalizar
 	# -Corregir copia de dataframes por copia y valor
