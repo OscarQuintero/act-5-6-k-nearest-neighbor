@@ -1,4 +1,5 @@
 Frequency,Angle,Chord Length,F-s Velocity,Suction Thickness,Sound Level (TARGET)
+Numerical,Numerical,Numerical,Numerical,Numerical,Numerical
 800,0,0.3048,71.3,0.00266337,126.201
 1000,0,0.3048,71.3,0.00266337,125.201
 1250,0,0.3048,71.3,0.00266337,125.951
