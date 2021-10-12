@@ -7,8 +7,8 @@ import numpy
 
 #----------------VARIABLES---------------------------------------------
 
-nombreArchivoCSV = "airfoil_self_noise.csv"
-nombreClase = "Sound Level (TARGET)"
+nombreArchivoCSV = "iris.csv"
+nombreClase = "Class of Iris (TARGET)"
 nombrePrediccion = 'Predicción'
 claseNumerica = True
 porcentajeEntrenamiento = 0
@@ -230,6 +230,11 @@ listaAtributos = ConjuntoInicial.columns.tolist()
 listaAtributos.remove(nombreClase)
 numeroAtributos = len(listaAtributos)
 
+listaAtributosNumericos[:] = listaAtributos[:]
+for atributo in listaAtributos:
+	if diccTiposAtributos[atributo] != 'Numerical':
+		listaAtributosNumericos.remove(atributo)
+print(listaAtributosNumericos)
 
 print("Se han encontrado ", numeroDeInstancias, " instancias en el Conjunto Inicial")
 print("Los tipos de dato para cada atributo son:\n")
@@ -340,11 +345,8 @@ if False:
 print("Pruebas de normalizar columnas")
 print("Antes de normalizar")
 print(ConjuntoInicial.tail())
-listaAtributosNumericos[:] = listaAtributos[:]
-for atributo in listaAtributos:
-	if diccTiposAtributos[atributo] != 'Numerical':
-		listaAtributosNumericos.remove(atributo)
-print(listaAtributosNumericos)
+
+
 
 ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaAtributosNumericos)
 
