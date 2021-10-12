@@ -173,6 +173,15 @@ def normalizarColumna(Tabla, columna):
 	print(vmax)
 	Tabla[columna] = Tabla.apply(lambda fila: normalizar(fila[columna],vmin,vmax), axis=1)
 	return Tabla
+
+
+def normalizarColumnasEspecificadas(Tabla, listaColumnas):
+	for columna in listaColumnas:		
+		Tabla = normalizarColumna(Tabla, columna) 
+
+	return Tabla
+def detectarColumnasNumericas():
+	return
 #----------------BEGIN-------------------------------------------------
 limpiarPantalla()
 print("--------------------------------------------------------")
@@ -303,11 +312,12 @@ if False:
 
 print("Pruebas de normalizar columnas")
 print("Antes de normalizar")
-print(ConjuntoInicial.head())
-ConjuntoInicial =  normalizarColumna(ConjuntoInicial, 'Frequency')
+print(ConjuntoInicial.tail())
+listaColumnasNumericas = ['Frequency','Angle','Chord Length','F-s Velocity','Suction Thickness']
+ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaColumnasNumericas)
 
 print("Después de normalizar")
-print(ConjuntoInicial.head())
+print(ConjuntoInicial.tail())
 	# Pendiente:
 	# -Normalizar
 	# -Corregir copia de dataframes por copia y valor
