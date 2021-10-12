@@ -235,6 +235,7 @@ for atributo in listaAtributos:
 		listaAtributosNumericos.remove(atributo)
 print(listaAtributosNumericos)
 print("\n")
+
 print("Normalizando Atributos Numéricos del Conjunto Iicial")
 ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaAtributosNumericos)
 print("Conjunto de Datos [Normalizado]:")
@@ -319,7 +320,7 @@ print("\n")
 # print(ConjuntoEntrenamiento)
 print("\n")
 
-print("La clase es numérica?", claseNumerica)
+
 if False:
 	
 	print("Generar tabla de predicciones")
@@ -349,9 +350,9 @@ if False:
 
 
 	# Pendiente:
-	# -Normalizar
+	
 	# -Corregir copia de dataframes por copia y valor
-	# -Captar tipos de datos
+	
 	# -Atributos categoricos
 
 
