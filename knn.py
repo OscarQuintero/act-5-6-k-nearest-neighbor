@@ -16,6 +16,7 @@ numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
 numeroAtributos = 0
 listaAtributos = []
+listaAtributosNumericos = []
 K = 1
 ConjuntoInicial = pandas.DataFrame()
 ConjuntoEntrenamiento = pandas.DataFrame()
@@ -192,15 +193,31 @@ print("\n")
 
 print("Cargando Conjunto de Datos desde ", nombreArchivoCSV, "...")
 try: 
-	ConjuntoInicial = pandas.read_csv(nombreArchivoCSV)
+	# Se carga el CSV ignorando la segunda linea del csv que contiene los tipos de dato
+	ConjuntoInicial = pandas.read_csv(nombreArchivoCSV, header=0, skiprows=[1])
 	df = ConjuntoInicial
+
+	# Se cargan los tipos de datos en un diccionario
+	datatipes = pandas.read_csv(nombreArchivoCSV, header=0, nrows=1)
+	
+	diccTiposAtributos ={}
+	for col in datatipes.columns.tolist():
+		diccTiposAtributos[col] = datatipes[col].iloc[0]
+	if diccTiposAtributos[nombreClase] != 'Numerical':
+		claseNumerica = False
+
+
 except:
+
+
 	print("Archivo CSV no cargado")
 	print("Finalizando programa\n")
 	exit()
 
-print("CSV cargado")
 
+print("CSV cargado")
+input("Presione una tecla para continuar...")
+print("\n")
 print("Conjunto de Datos: \n")
 
 print(ConjuntoInicial)
@@ -215,6 +232,10 @@ numeroAtributos = len(listaAtributos)
 
 
 print("Se han encontrado ", numeroDeInstancias, " instancias en el Conjunto Inicial")
+print("Los tipos de dato para cada atributo son:\n")
+print(datatipes)
+print("\n")
+
 print("Introduzca el porcentaje de instancias para entrenamiento (sin el signo %)")
 try:
 	porcentajeEntrenamiento = float(input("Porcentaje de instancias de entrenamiento: "))
@@ -223,7 +244,7 @@ except ValueError:
 	print("Valor no valido")
 	print("Usar 70% como valor por defecto?")
 	res = input("S/N: ")
-	if res != 'S':
+	if res.upper() != 'S':
 		print("Finalizando el programa.... :(")
 		exit()
 	else:
@@ -244,6 +265,12 @@ print("En consecuencia se determina que")
 print("Se usarán ", numeroDeInstanciasEntrenamiento," instancias para entrenamiento y")
 print("se usarán ", numeroDeInstancias - numeroDeInstanciasEntrenamiento," instancias para prueba.")
 print("Se usarán K: ", K, " vecinos cercanos")
+if(claseNumerica):
+	tipoDeProblema = "Regresión"
+else:
+	tipoDeProblema = "Clasificación"
+print("Se resolverá el problema por ", tipoDeProblema)
+
 print("\n")
 
 print("Direccion de memoria antes")
@@ -313,8 +340,13 @@ if False:
 print("Pruebas de normalizar columnas")
 print("Antes de normalizar")
 print(ConjuntoInicial.tail())
-listaColumnasNumericas = ['Frequency','Angle','Chord Length','F-s Velocity','Suction Thickness']
-ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaColumnasNumericas)
+listaAtributosNumericos[:] = listaAtributos[:]
+for atributo in listaAtributos:
+	if diccTiposAtributos[atributo] != 'Numerical':
+		listaAtributosNumericos.remove(atributo)
+print(listaAtributosNumericos)
+
+ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaAtributosNumericos)
 
 print("Después de normalizar")
 print(ConjuntoInicial.tail())
