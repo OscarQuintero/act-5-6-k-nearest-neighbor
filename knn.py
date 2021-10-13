@@ -327,9 +327,10 @@ print("Se resolverá el problema por ", tipoDeProblema)
 print("\n")
 
 input("Presone ENTER para continuar...")
+limpiarPantalla()
 
 print("Direccion de memoria antes")
-print(id(ConjuntoEntrenamiento))
+# print(id(ConjuntoEntrenamiento))
 print("\n")
 
 
@@ -338,7 +339,7 @@ ConjuntoEntrenamiento = ConjuntosResultantes['Entrenamiento']
 ConjuntoPrueba = ConjuntosResultantes['Prueba']
 
 print("Direccion de memoria despues")
-print(id(ConjuntoEntrenamiento))
+# print(id(ConjuntoEntrenamiento))
 print("\n")
 
 print("Conjunto de Datos de Entrenamiento:")
@@ -385,13 +386,17 @@ if claseNumerica:
 	MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
 	print(TablaComparacion)
 	print("\n")
+	print("---------------------------------------------------------")
 	print("El Error Cuadrático Medio (MSE) es: ", MSE)
+	print("---------------------------------------------------------")
 	
 else:
 	PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
 	print(TablaComparacion)
 	print("\n")
+	print("---------------------------------------------------------")
 	print("El porcentaje de Aciertos es: ", PorcentajeAciertos, " %")
+	print("---------------------------------------------------------")
 
 
 
