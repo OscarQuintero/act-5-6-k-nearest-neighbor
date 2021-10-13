@@ -24,6 +24,8 @@ numeroDeInstanciasEntrenamiento = 0
 numeroAtributos = 0
 listaAtributos = []
 listaAtributosNumericos = []
+listaAtributosCategoricos = []
+diccTiposAtributos ={}
 K = 1
 ConjuntoInicial = pandas.DataFrame()
 ConjuntoEntrenamiento = pandas.DataFrame()
@@ -66,8 +68,17 @@ def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
 	return ConjuntosResultantes
 
 
-def distancia(tupla1, tupla2):
-	return
+def distancia(tupla1Categorica, tupla1Numerica, tupla2Categorica, tupla2Numerica):
+	distancia = 0	
+	
+	# distancia euclideana
+	distancia = distanciaEuclideana(tupla1Numerica, tupla2Numerica)
+	
+	# distancia Hamming
+	distancia += distanciaHamming(tupla1Categorica, tupla2Categorica)	
+			
+	return distancia
+	
 
 def distanciaEuclideana(tupla1, tupla2): #Con listas
 	n = len(tupla1)
@@ -106,12 +117,28 @@ def distanciaHamming(tupla1, tupla2):
 		return sumaHamming
 	 
 def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la clase
+	tuplaCategorica = []
+	tuplaNumerica = []
+	TablaDeDistancias = ConjuntoE[listaAtributos]
 	print("--------------------------------------------------------")
 	print("Tabla de distancias para")
-	print(tupla)
-	TablaDeDistancias = ConjuntoE[listaAtributos]
+	print(tupla)	
 	# TablaDeDistancias = TablaDeDistancias
-	TablaDeDistancias['Distancia'] = TablaDeDistancias.apply(lambda fila: distanciaEuclideana(tupla,fila[listaAtributos].tolist()), axis=1)
+	#dividir tupla
+	i = 0
+	dTA = diccTiposAtributos.copy()
+	dTA.pop(nombreClase)
+	for atributo, tipo in dTA.items():
+		if tipo == 'Numerical':
+			tuplaNumerica.append(tupla[i])
+		else:
+			tuplaCategorica.append(tupla[i])
+		i+=1
+	
+
+
+	
+	TablaDeDistancias['Distancia'] = TablaDeDistancias.apply(lambda fila: distancia(tuplaCategorica,tuplaNumerica,fila[listaAtributosCategoricos].tolist(),fila[listaAtributosNumericos].tolist()), axis=1)
 	TablaDeDistancias = TablaDeDistancias.sort_values('Distancia')
 	
 	print(TablaDeDistancias)
@@ -208,7 +235,7 @@ try:
 	# Se cargan los tipos de datos en un diccionario
 	datatipes = pandas.read_csv(nombreArchivoCSV, header=0, nrows=1)
 	
-	diccTiposAtributos ={}
+	
 	for col in datatipes.columns.tolist():
 		diccTiposAtributos[col] = datatipes[col].iloc[0]
 	if diccTiposAtributos[nombreClase] != 'Numerical':
@@ -221,7 +248,6 @@ except:
 	print("Archivo CSV no cargado")
 	print("Finalizando programa\n")
 	exit()
-
 
 print("CSV cargado")
 
@@ -241,8 +267,15 @@ listaAtributosNumericos[:] = listaAtributos[:]
 for atributo in listaAtributos:
 	if diccTiposAtributos[atributo] != 'Numerical':
 		listaAtributosNumericos.remove(atributo)
+listaAtributosCategoricos[:] = listaAtributos[:]
+for atributo in listaAtributos:
+	if diccTiposAtributos[atributo] == 'Numerical':
+		listaAtributosCategoricos.remove(atributo)
+
 print("Columnas numéricas:")
 print(listaAtributosNumericos)
+print("Columnas Categóricas:")
+print(listaAtributosCategoricos)
 print("\n")
 
 print("Normalizando Atributos Numéricos del Conjunto Iicial")
@@ -323,49 +356,54 @@ print("Aplicando Algoritmo K Nearest Neighbor ....")
 
 input("Presone ENTER para continuar...")
 
-print("Prueba con predicciones")
-tuplaI = [0.444444,0.416667,0.694915,0.708333] 				#debe resultar: Iris-virginica
-tuplaA = [0.030303,0.000000,1.000000,1.000000,0.039005] #debe resultar: 126.201
-res = predecirKNN(tuplaI, ConjuntoEntrenamiento, nombreClase, K)
+# print("Prueba con predicciones")
+# tuplaI = [0.444444,0.416667,0.694915,0.708333] 				#debe resultar: Iris-virginica
+# tuplaA = [0.030303,0.000000,1.000000,1.000000,0.039005] #debe resultar: 126.201
+# tuplaP = ['sunny',  0.523810,  0.161290,   True]		# debe resultar: No
+# res = predecirKNN(tuplaP, ConjuntoEntrenamiento, nombreClase, K)
+
 print("\n")
 # print(ConjuntoEntrenamiento)
 print("\n")
 
 
-if True:
+
 	
-	print("Generando tabla de predicciones...")
-	TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
-	print(TablaDePredicciones)
-	# print(ConjuntoPrueba)
+print("Generando tabla de predicciones...")
+TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
+print(TablaDePredicciones)
+# print(ConjuntoPrueba)
 
-	print("\n")
-	print("Evaluando capacidad predicitiva...")
-	print("\n")
+print("\n")
+print("Evaluando capacidad predicitiva...")
+print("\n")
 
 
-	TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
-	if claseNumerica:
-		MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
-	else:
-		PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
-
+TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
+if claseNumerica:
 	print("La clase del conjunto de datos es numérica")
+	MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
 	print(TablaComparacion)
 	print("\n")
 	print("El Error Cuadrático Medio (MSE) es: ", MSE)
+	
+else:
+	PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
+	print(TablaComparacion)
+	print("\n")
 	print("El porcentaje de Aciertos es: ", PorcentajeAciertos, " %")
 
-	print("\n")
-	print("\n")
+
+
+print("\n")
+print("\n")
 
 
 	# Pendiente:
 	
 	# -Corregir copia de dataframes por copia y valor
 	
-	# -Atributos categoricos
-
+	
 
 
 
