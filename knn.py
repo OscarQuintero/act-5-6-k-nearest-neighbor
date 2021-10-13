@@ -7,8 +7,15 @@ import numpy
 
 #----------------VARIABLES---------------------------------------------
 
-nombreArchivoCSV = "airfoil_self_noise.csv"
-nombreClase = "Sound Level (TARGET)"
+# nombreArchivoCSV = "airfoil_self_noise.csv"
+# nombreClase = "Sound Level (TARGET)"
+
+# nombreArchivoCSV = "iris.csv"
+# nombreClase = "Class of Iris (TARGET)"
+
+nombreArchivoCSV = "play_db.csv"
+nombreClase = "Play"
+
 nombrePrediccion = 'Predicción'
 claseNumerica = True
 porcentajeEntrenamiento = 0
@@ -16,6 +23,9 @@ numeroDeInstancias = 0
 numeroDeInstanciasEntrenamiento = 0
 numeroAtributos = 0
 listaAtributos = []
+listaAtributosNumericos = []
+listaAtributosCategoricos = []
+diccTiposAtributos ={}
 K = 1
 ConjuntoInicial = pandas.DataFrame()
 ConjuntoEntrenamiento = pandas.DataFrame()
@@ -58,9 +68,17 @@ def generarConjuntoEntrenamiento(ConjuntoI,numInstanciasE):
 	return ConjuntosResultantes
 
 
-
-def normalizar(valor, vMin, vMax):
-	return (float(valor) - float(vMin))/(float(vMax) - float(vMin))
+def distancia(tupla1Categorica, tupla1Numerica, tupla2Categorica, tupla2Numerica):
+	distancia = 0	
+	
+	# distancia euclideana
+	distancia = distanciaEuclideana(tupla1Numerica, tupla2Numerica)
+	
+	# distancia Hamming
+	distancia += distanciaHamming(tupla1Categorica, tupla2Categorica)	
+			
+	return distancia
+	
 
 def distanciaEuclideana(tupla1, tupla2): #Con listas
 	n = len(tupla1)
@@ -99,19 +117,32 @@ def distanciaHamming(tupla1, tupla2):
 		return sumaHamming
 	 
 def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la clase
-	print("-----")
-	print("Tabla de distancias para ", tupla)
+	tuplaCategorica = []
+	tuplaNumerica = []
 	TablaDeDistancias = ConjuntoE[listaAtributos]
+	print("--------------------------------------------------------")
+	print("Tabla de distancias para")
+	print(tupla)	
 	# TablaDeDistancias = TablaDeDistancias
-	TablaDeDistancias['Distancia'] = TablaDeDistancias.apply(lambda fila: distanciaEuclideana(tupla,fila[listaAtributos].tolist()), axis=1)
-	TablaDeDistancias = TablaDeDistancias.sort_values('Distancia')
-	print(TablaDeDistancias)
+	#dividir tupla
+	i = 0
+	dTA = diccTiposAtributos.copy()
+	dTA.pop(nombreClase)
+	for atributo, tipo in dTA.items():
+		if tipo == 'Numerical':
+			tuplaNumerica.append(tupla[i])
+		else:
+			tuplaCategorica.append(tupla[i])
+		i+=1
+	
 
-
-	minDistancia = TablaDeDistancias['Distancia'].min()
-	# print("Minimo: ", minDistancia)	
 
 	
+	TablaDeDistancias['Distancia'] = TablaDeDistancias.apply(lambda fila: distancia(tuplaCategorica,tuplaNumerica,fila[listaAtributosCategoricos].tolist(),fila[listaAtributosNumericos].tolist()), axis=1)
+	TablaDeDistancias = TablaDeDistancias.sort_values('Distancia')
+	
+	print(TablaDeDistancias)
+	print("Tabla de K =", k, "vecinos más cercanos")
 	KNearestNeighborsTable = TablaDeDistancias.head(k)
 	print(KNearestNeighborsTable)
 	ListaIndicesKNN = KNearestNeighborsTable.index.tolist()
@@ -119,14 +150,15 @@ def predecirKNN(tupla, ConjuntoE, nombreClase, k=1): #predice el valor de la cla
 	KNearestNeighborsTable = ConjuntoInicial.iloc[ListaIndicesKNN]
 	print(KNearestNeighborsTable) #No se pudo desde ConjuntoE por desbordamiento
 	
-	print("-----")
-
 	if claseNumerica:
 		result = KNearestNeighborsTable[nombreClase].mean()
-		return result
+		print(result)		
 	else: 
 		result = KNearestNeighborsTable[nombreClase].mode().head(1)
-		return result.iloc[0]
+		result = result.iloc[0]
+	print("-------Predicción------>", result)
+	print("\n")
+	return result
 	
 
 def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
@@ -136,9 +168,9 @@ def generarPrediccionesKNNEnConjunto(ConjuntoP, ConjuntoE, nombreClase, k=1):
 
 def insertarPrediccionParaLaInstancia(fila):
 	instancia = fila[listaAtributos].tolist()
-	print(instancia)
+	# print(instancia)
 	prediccion = predecirKNN(instancia, ConjuntoEntrenamiento, nombreClase, K)
-	print(prediccion)
+	
 	print("\n")
 	return prediccion
 
@@ -165,6 +197,27 @@ def porcentajeAciertos(TablaC, nombreClase, nombrePrediccion):
 	TablaC['Acierto'] = TablaC.apply(esAcierto, axis=1)
 
 	return TablaC['Acierto'].mean()
+
+def normalizar(valor, vMin, vMax):
+	return (float(valor) - float(vMin))/(float(vMax) - float(vMin))
+
+
+def normalizarColumna(Tabla, columna):
+	vmin = Tabla[columna].min()
+	vmax = Tabla[columna].max()
+	print("Mínimo de la columna ", columna, ": ", vmin)
+	print("Máximo de la columna ", columna, ": ", vmax)
+	Tabla[columna] = Tabla.apply(lambda fila: normalizar(fila[columna],vmin,vmax), axis=1)
+	return Tabla
+
+
+def normalizarColumnasEspecificadas(Tabla, listaColumnas):
+	for columna in listaColumnas:		
+		Tabla = normalizarColumna(Tabla, columna) 
+
+	return Tabla
+def detectarColumnasNumericas():
+	return
 #----------------BEGIN-------------------------------------------------
 limpiarPantalla()
 print("--------------------------------------------------------")
@@ -175,20 +228,34 @@ print("\n")
 
 print("Cargando Conjunto de Datos desde ", nombreArchivoCSV, "...")
 try: 
-	ConjuntoInicial = pandas.read_csv(nombreArchivoCSV)
+	# Se carga el CSV ignorando la segunda linea del csv que contiene los tipos de dato
+	ConjuntoInicial = pandas.read_csv(nombreArchivoCSV, header=0, skiprows=[1])
 	df = ConjuntoInicial
+
+	# Se cargan los tipos de datos en un diccionario
+	datatipes = pandas.read_csv(nombreArchivoCSV, header=0, nrows=1)
+	
+	
+	for col in datatipes.columns.tolist():
+		diccTiposAtributos[col] = datatipes[col].iloc[0]
+	if diccTiposAtributos[nombreClase] != 'Numerical':
+		claseNumerica = False
+
+
 except:
+
+
 	print("Archivo CSV no cargado")
 	print("Finalizando programa\n")
 	exit()
 
 print("CSV cargado")
 
+print("\n")
 print("Conjunto de Datos: \n")
 
 print(ConjuntoInicial)
 print("\n")
-
 
 numeroDeInstancias = len(ConjuntoInicial.index)
 
@@ -196,8 +263,32 @@ listaAtributos = ConjuntoInicial.columns.tolist()
 listaAtributos.remove(nombreClase)
 numeroAtributos = len(listaAtributos)
 
+listaAtributosNumericos[:] = listaAtributos[:]
+for atributo in listaAtributos:
+	if diccTiposAtributos[atributo] != 'Numerical':
+		listaAtributosNumericos.remove(atributo)
+listaAtributosCategoricos[:] = listaAtributos[:]
+for atributo in listaAtributos:
+	if diccTiposAtributos[atributo] == 'Numerical':
+		listaAtributosCategoricos.remove(atributo)
 
+print("Columnas numéricas:")
+print(listaAtributosNumericos)
+print("Columnas Categóricas:")
+print(listaAtributosCategoricos)
+print("\n")
+
+print("Normalizando Atributos Numéricos del Conjunto Iicial")
+ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaAtributosNumericos)
+print("\n")
+print("Conjunto de Datos [Normalizado]:")
+print(ConjuntoInicial)
+print("\n")
 print("Se han encontrado ", numeroDeInstancias, " instancias en el Conjunto Inicial")
+print("Los tipos de dato para cada atributo son:\n")
+print(datatipes)
+print("\n")
+
 print("Introduzca el porcentaje de instancias para entrenamiento (sin el signo %)")
 try:
 	porcentajeEntrenamiento = float(input("Porcentaje de instancias de entrenamiento: "))
@@ -206,7 +297,7 @@ except ValueError:
 	print("Valor no valido")
 	print("Usar 70% como valor por defecto?")
 	res = input("S/N: ")
-	if res != 'S':
+	if res.upper() != 'S':
 		print("Finalizando el programa.... :(")
 		exit()
 	else:
@@ -227,12 +318,19 @@ print("En consecuencia se determina que")
 print("Se usarán ", numeroDeInstanciasEntrenamiento," instancias para entrenamiento y")
 print("se usarán ", numeroDeInstancias - numeroDeInstanciasEntrenamiento," instancias para prueba.")
 print("Se usarán K: ", K, " vecinos cercanos")
+if(claseNumerica):
+	tipoDeProblema = "Regresión"
+else:
+	tipoDeProblema = "Clasificación"
+print("Se resolverá el problema por ", tipoDeProblema)
+
 print("\n")
+
+input("Presone ENTER para continuar...")
 
 print("Direccion de memoria antes")
 print(id(ConjuntoEntrenamiento))
 print("\n")
-
 
 
 ConjuntosResultantes = generarConjuntoEntrenamiento(ConjuntoInicial, numeroDeInstanciasEntrenamiento)
@@ -251,48 +349,61 @@ print(ConjuntoPrueba)
 print("\n")
 
 
-print("Algoritmo K Nearest Neighbor ....")
-print("Hacer función del algoritmo K-NN por tupla")
-print("Hacer predicciones para el conjunto de prueba")
-print("Mostrar predicciones y valores reales")
+print("Aplicando Algoritmo K Nearest Neighbor ....")
 
-print("Prueba con predicciones")
-tuplaI = [5.9,3.0,5.1,1.8]
-tuplaA = [800,0,0.3048,71.3,0.00266337] #debe resultar: 126.201
-res = predecirKNN(tuplaI, ConjuntoEntrenamiento, nombreClase, K)
-print(res)
+
+
+
+input("Presone ENTER para continuar...")
+
+# print("Prueba con predicciones")
+# tuplaI = [0.444444,0.416667,0.694915,0.708333] 				#debe resultar: Iris-virginica
+# tuplaA = [0.030303,0.000000,1.000000,1.000000,0.039005] #debe resultar: 126.201
+# tuplaP = ['sunny',  0.523810,  0.161290,   True]		# debe resultar: No
+# res = predecirKNN(tuplaP, ConjuntoEntrenamiento, nombreClase, K)
+
 print("\n")
 # print(ConjuntoEntrenamiento)
 print("\n")
 
-print("La clase es numérica?", claseNumerica)
-if True:
+
+
 	
-	print("Generar tabla de predicciones")
-	TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
-	print(TablaDePredicciones)
-	# print(ConjuntoPrueba)
+print("Generando tabla de predicciones...")
+TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
+print(TablaDePredicciones)
+# print(ConjuntoPrueba)
 
-	print("\n")
-	print("Evaluando capacidad predicitiva...")
-	print("\n")
+print("\n")
+print("Evaluando capacidad predicitiva...")
+print("\n")
 
 
-	TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
-	if claseNumerica:
-		MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
-	else:
-		PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
-
+TablaComparacion = generarTablaComparacion(TablaDePredicciones, nombreClase, nombrePrediccion)
+if claseNumerica:
 	print("La clase del conjunto de datos es numérica")
+	MSE = errorCuadraticoMedio(TablaComparacion, nombreClase, nombrePrediccion)
 	print(TablaComparacion)
 	print("\n")
 	print("El Error Cuadrático Medio (MSE) es: ", MSE)
+	
+else:
+	PorcentajeAciertos = porcentajeAciertos(TablaComparacion, nombreClase, nombrePrediccion)
+	print(TablaComparacion)
+	print("\n")
 	print("El porcentaje de Aciertos es: ", PorcentajeAciertos, " %")
 
-	print("\n")
-	print("\n")
 
+
+print("\n")
+print("\n")
+
+
+
+	# Pendiente:
+	
+	# -Corregir copia de dataframes por copia y valor
+	
 	
 
 
