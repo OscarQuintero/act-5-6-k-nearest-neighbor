@@ -7,14 +7,14 @@ import numpy
 
 #----------------VARIABLES---------------------------------------------
 
-# nombreArchivoCSV = "airfoil_self_noise.csv"
-# nombreClase = "Sound Level (TARGET)"
+nombreArchivoCSV = "airfoil_self_noise.csv"
+nombreClase = "Sound Level (TARGET)"
 
 # nombreArchivoCSV = "iris.csv"
 # nombreClase = "Class of Iris (TARGET)"
 
-nombreArchivoCSV = "play_db.csv"
-nombreClase = "Play"
+# nombreArchivoCSV = "play_db.csv"
+# nombreClase = "Play"
 
 nombrePrediccion = 'Predicción'
 claseNumerica = True
@@ -277,6 +277,8 @@ print(listaAtributosNumericos)
 print("Columnas Categóricas:")
 print(listaAtributosCategoricos)
 print("\n")
+input("Presone ENTER para continuar...")
+limpiarPantalla()
 
 print("Normalizando Atributos Numéricos del Conjunto Iicial")
 ConjuntoInicial = normalizarColumnasEspecificadas(ConjuntoInicial, listaAtributosNumericos)
@@ -374,7 +376,8 @@ print("Generando tabla de predicciones...")
 TablaDePredicciones = generarPrediccionesKNNEnConjunto(ConjuntoPrueba, ConjuntoEntrenamiento, nombreClase, K)
 print(TablaDePredicciones)
 # print(ConjuntoPrueba)
-
+input("Presone ENTER para continuar...")
+limpiarPantalla()
 print("\n")
 print("Evaluando capacidad predicitiva...")
 print("\n")
